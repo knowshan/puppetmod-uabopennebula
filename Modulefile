@@ -1,0 +1,8 @@
+name 'uabopennebula'
+version '0.0.1'
+source 'git://github.com/pavgi/uabopennebula.git'
+author 'Shantanu Pavgi'
+license ''
+summary 'Puppet module to manage self-contained OpenNebula installation and configuration'
+description 'Puppet module to manage self-contained OpenNebula installation and configuration'
+project_page 'https://github.com/pavgi/uabopennebula'
