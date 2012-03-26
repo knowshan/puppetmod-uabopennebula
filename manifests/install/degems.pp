@@ -39,10 +39,12 @@ class uabopennebula::install::degems (
   $sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby']
   $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'xmlparser']
 
-  # define gem list based on ruby version
+  # 'Include' depackages parameterized class and define require dependency 
   class {"uabopennebula::install::depackages":
     one_install_type => $one_install_type,
   }
+  Class['uabopennebula::install::depackages'] -> Class['uabopennebula::install::degems']
+
   # Install gems based on one_install_type
   case $one_install_type {
     "sunstone": {
