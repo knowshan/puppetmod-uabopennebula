@@ -37,7 +37,7 @@ class uabopennebula::install::degems (
   # There are possible workarounds in some use cases though.
   $default = ['']
   $sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby']
-  $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'rack', 'sinatra', 'thin', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'xmlparser']
+  $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'xmlparser']
 
   # define gem list based on ruby version
   class {"uabopennebula::install::depackages":
