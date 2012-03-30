@@ -1,48 +1,54 @@
 Puppet::Type.newtype(:onehost) do
-  @doc = <<-EOS
-Manage OpenNebula hosts (hypervisors) through Puppet using onehost command.
-EOS
+  desc "Manage OpenNebula hosts (hypervisors) through Puppet using onehost command."
 
+# Resource Properties
+  # ensurable - used for onehost create and delete
   ensurable do
-    newvalue(:create) do
+    newvalue(:present) do
       provider.create
     end
 
-    newvalue(:delete) do
-      provider.destroy
+    newvalue(:absent) do
+      provider.delete
+    end
+    # Add alias for values - same as corresponding onehost commands
+    aliasvalue(:create,:present)
+    aliasvalue(:delete,:absent)
+    defaultto :present
+  end #ensurable
+
+  # enable true/false property for onehost enable and disable commands
+  newproperty :enable do
+    newvalue :true do
+      provider.activate
     end
 
-    newvalue(:enable)  do
-      provider.enable
+    newvalue :false do
+      provider.deactivate
     end
+  end # enable
 
-    newvalue(:disable) do
-      provider.disable
-    end
-
-    # defaultto :create
-  end
-
+# Resource Parameters
+  # namevar parameter - hostname
   newparam(:name) do
-    desc "Name of host."
-
+    desc "Hypervisor hostname"
     isnamevar
   end
 
   newparam(:im_mad) do
-    desc "Information Driver"
+    desc "Information Manager Driver"
   end
 
   newparam(:vmm_mad) do
-    desc "Virtualization Driver"
+    desc "Virtualization Manager Driver"
   end
 
   newparam(:tm_mad) do
-    desc "Transfer Driver"
+    desc "Transfer Manager Driver"
   end
 
   newparam(:vnm_mad) do
-    desc "Virtual Network Driver"
+    desc "Virtual Network Manager Driver"
   end
 
 end
