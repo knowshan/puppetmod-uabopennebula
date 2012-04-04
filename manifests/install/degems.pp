@@ -36,10 +36,26 @@ class uabopennebula::install::degems (
   # and it doesn't support string/array manipulation like Ruby/Python.
   # There are possible workarounds in some use cases though.
   $default = ['']
-  $sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby']
-  $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'xmlparser']
+  if $rubyversion >= '1.8.7'{
+    if $rubyversion == '1.8.7'{ # requires xmlparser and nokogiri shouldn't be installed
+      $sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel']
+      $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'xmlparser']
+      $sqlite_gem = 'sqlite3'
+      $sqlite_gem_version = 'installed'
+    } else { # gems for Ruby > 1.8.7 - requires nokogiri and xmlparser shouldn't be installed
+      $sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel']
+      $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'nokogiri']
+      $sqlite_gem = 'sqlite3'
+      $sqlite_gem_version = 'installed'
+    }
+  } else { # gems for ruby < 1.8.7 - both xmlparser and nokogiri installed, also installed sqlite3-ruby v1.2.0 instead of sqlite3
+      $sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel']
+      $all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'nokogiri', 'xmlparser']
+      $sqlite_gem = 'sqlite3-ruby'
+      $sqlite_gem_version = '1.2.0'
+  }
 
-  # 'Include' depackages parameterized class and define require dependency 
+  # 'Include' depackages parameterized class and define require dependency
   class {"uabopennebula::install::depackages":
     one_install_type => $one_install_type,
   }
@@ -50,14 +66,27 @@ class uabopennebula::install::degems (
     "sunstone": {
       package { $sunstone:
         provider => 'gem',
-        ensure => 'installed',
+        ensure   => 'installed',
       }
+      # sqlite
+      package { $sqlite_gem:
+        provider => 'gem',
+        ensure   => $sqlite_gem_version,
+      }
+      notify{ "Gems $sunstone ": }
     }
 
     "all": {
       package { $all:
         provider => 'gem',
-        ensure => 'installed' }
+        ensure   => 'installed'
+      }
+      # sqlite
+      package { $sqlite_gem:
+        provider => 'gem',
+        ensure   => $sqlite_gem_version,
+      }
+      notify{ "Gems $all ": }
     }
 
     "default": {
