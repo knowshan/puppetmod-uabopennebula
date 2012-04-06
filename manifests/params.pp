@@ -46,7 +46,8 @@ class uabopennebula::params {
   $one_oned_conf_path = "${one_location}/etc/oned.conf"
   # Sunstone webserver configuration file path
   $one_sunstone_conf_path = "${one_location}/etc/sunstone-server.conf"
-
+  # database backend
+  $one_db_backend = 'sqlite'
   # Set Package provider
   Package {
     provider => $::operatingsystem ? {
