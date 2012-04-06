@@ -29,8 +29,8 @@ class uabopennebula::install::depackages (
   # Assumption/Requirement: site.pp has already cnfigured
   # OS specific Package providers
   $default = ['']
-  $sunstone = ['gcc', 'gcc-c++', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'scons']
-  $all = ['bluez-libs-devel', 'bzip2-devel', 'db4-devel', 'gcc', 'gcc-c++', 'gdbm-devel', 'openssl-devel', 'ncurses-devel', 'readline-devel', 'sqlite-devel', 'tkinter', 'tk-devel', 'zlib-devel', 'xmlrpc-c-devel', 'libxslt-devel', 'libgcrypt-devel', 'libgpg-error-devel', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'scons']
+  $sunstone = ['gcc', 'gcc-c++', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'sqlite-devel', 'scons']
+  $all = ['bluez-libs-devel', 'bzip2-devel', 'db4-devel', 'gcc', 'gcc-c++', 'gdbm-devel', 'openssl-devel', 'ncurses-devel', 'readline-devel', 'sqlite-devel', 'tkinter', 'tk-devel', 'zlib-devel', 'xmlrpc-c-devel', 'libxslt-devel', 'libgcrypt-devel', 'libgpg-error-devel', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'scons', 'mysql-server', 'mysql-devel']
 
   case $one_install_type {
     "sunstone": {
