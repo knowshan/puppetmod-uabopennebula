@@ -1,0 +1,29 @@
+<%= "#!/bin/bash" %>
+
+<%# Create build command %>
+<% case one_db_backend
+when "sqlite"
+  build_command = 'scons' %>
+<% when 'mysql'
+  build_command = 'scons mysql=yes' %>
+<% else
+  build_command = 'echo' %>
+<% end %>
+<%# Create install command %>
+<% install_command =  "./install.sh -u #{one_user} -g #{one_group} -d #{one_location}" %>
+<% cleanup_command = "rm release-3.2.1; rm -rf OpenNebula-one-f10e852" %>
+# /usr/bin/wget -P /tmp http://dev.opennebula.org/attachments/download/478/opennebula-3.0.0.tar.gz 
+/usr/bin/wget --no-check-certificate -P /tmp https://github.com/OpenNebula/one/tarball/release-3.2.1 
+pushd /tmp
+tar xzf release-3.2.1
+pushd OpenNebula-one-f10e852 
+# Create install location dir and set permissions
+<%= "mkdir -p #{one_location}" %>
+<%= "chown #{one_user}:#{one_group} #{one_location}" %>
+<%= "# Build/Compile using scons" %>
+<%= "#{build_command}" %>
+<%= "# Run install script" %>
+<%= "#{install_command}" %>
+popd
+<%= "#{cleanup_command}" %>
+popd
