@@ -19,6 +19,7 @@ tar xzf release-3.2.1
 pushd OpenNebula-one-f10e852 
 # Create install location dir and set permissions
 <%= "mkdir -p #{one_location}" %>
+<%= "rm -rf #{one_location}/*" %>
 <%= "chown #{one_user}:#{one_group} #{one_location}" %>
 <%= "# Build/Compile using scons" %>
 <%= "#{build_command}" %>
