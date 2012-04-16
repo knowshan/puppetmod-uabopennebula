@@ -1,51 +1,41 @@
 # = Class: uabopennebula::install::depackages
 #
-# Manage OpenNebula related system packages installation
-#  * Right now this class is called by uabopennebula::install::degems class and
-#  hence it shouldn't be called directly. May change in later revisions.
+# Installs system packages required OpenNebula
+# The 'degems' class call/requires this 'depackages' class so that system
+# packages are in-place before Rubygems installation.
 #
-# == TODO:
-# * Set package/gem arrays based on distro type. Also think about better placement/organization
-# of these arrays.
+# Requires: depackages -> degems -> installation
 #
 # == Parameters:
-#
-# * Parameter: Description (default)
-# * $one_oneadmin_home: 'oneadmin' OpenNebula system user's home directory (/home/pavgi)
-#
-# == Facts:
-#
-# * None
+# * Parameter: Description
+# * $one_install_type: OpenNebula installation type - all, sunstone
+# * $one_install_packages_sunstone: System packages group for 'sunstone'
+# * $one_install_packages_all: System packages group for 'all'
 #
 # == Author(s):
 # * Shantanu Pavgi, pavgi@uab.edu
 #
 
 class uabopennebula::install::depackages (
-  $one_install_type = "$uabopennebula::params::one_install_type"
+  $one_install_type = $uabopennebula::params::one_install_type,
+  $one_install_packages_sunstone = $uabopennebula::params::one_install_packages_sunstone,
+  $one_install_packages_all = $uabopennebula::params::one_install_packages_all
 ) inherits uabopennebula::params {
 
-  # Install OS specific packages
-  # Assumption/Requirement: site.pp has already cnfigured
-  # OS specific Package providers
-  $default = ['']
-  $sunstone = ['gcc', 'gcc-c++', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'sqlite-devel', 'scons']
-  $all = ['bluez-libs-devel', 'bzip2-devel', 'db4-devel', 'gcc', 'gcc-c++', 'gdbm-devel', 'openssl-devel', 'ncurses-devel', 'readline-devel', 'sqlite-devel', 'tkinter', 'tk-devel', 'zlib-devel', 'xmlrpc-c-devel', 'libxslt-devel', 'libgcrypt-devel', 'libgpg-error-devel', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'scons', 'mysql-server', 'mysql-devel']
-
   case $one_install_type {
-    "sunstone": {
-      package{ $sunstone:
+    'sunstone': {
+      package{ $one_install_packages_sunstone:
         ensure => 'installed',
       }
     } #EndCase-Sunstone
 
-    "all": {
-      package{ $all:
+    'all': {
+      package{ $one_install_packages_all:
         ensure => 'installed',
       }
     }
 
-    "default": {
+    'default': {
       notify{ "No packages get installed for ${one_install_type} ": }
     }
   } # EndCase

@@ -1,27 +1,33 @@
 # = Class: uabopennebula::params
 #
-# Provides OpenNebula install/configure specific parameters to other
-# uabopennebula classes. Other uabopennebula classes inherit uabopennebula::params
-# class to set their defaults.
+# Sets default parameter values that are inherited by other classes.
 #
 # == Parameters:
 #
 # * Parameter: Description (default)
+# Basic parameters - system user account etc.
 # * $one_user: OpenNebula system user account (pavgi)
 # * $one_group: OpenNebula system group account (pavgi)
+# * $one_uid: OpenNebula system user account id (99999)
+# * $one_gid: OpenNebula system group account id (99999)
+# * $one_shell: OpenNebula system account shell (/bin/bash)
+# * $one_user_comment: OpenNebula system user account comment (OpenNebula SysAccount)
 # * $one_oneadmin_home: 'oneadmin' OpenNebula system user's home directory (/home/pavgi)
-# * $one_oneadmin_authfile: Path to oneadmin user's authentication file ONE_AUTH ($oneadmin_home/.one_auth)
-# * $one_oneadmin_password: Plain text password string for the oneadmin user account ('password')
+# Installation  parameters
 # * $one_location: OpenNebula install location ($oneadmin_home/tmp-install/cloud/one)
 # * $one_install_type: OpenNebula installation type - all, sunstone (default: undef)
+# * $one_install_script: (/tmp/one_install_script)
+# * $one_db_backend: Databse backend type - mysql or sqlite (sqlite)
+# Configuration parameters
+# * $one_oneadmin_authfile: Path to oneadmin user's authentication file ONE_AUTH ($oneadmin_home/.one_auth)
+# * $one_oneadmin_password: Plain text password string for the oneadmin user account ('password')
 # * $one_oned_conf_path: Path to main OpenNebula configuration file oned.conf ($one_location/etc/oned.conf)
 # * $one_sunstone_conf_path: Path to Sunstone server configuration file ($one_location/etc/sunstone-server.conf)
+# * $one_db_backend: Databse backend type - mysql or sqlite (sqlite)
 #
 # == Facts:
 #
 # * $operatingsystem:   Used to set default system Package provider
-#
-# == Actions:
 #
 # == Author(s):
 #   * Shantanu Pavgi, pavgi@uab.edu
@@ -49,14 +55,15 @@ class uabopennebula::params {
   $one_sunstone_conf_path = "${one_location}/etc/sunstone-server.conf"
   # database backend
   $one_db_backend = 'sqlite'
-  # Set Package provider
-  Package {
-    provider => $::operatingsystem ? {
-      debian    => aptitude,
-      ubuntu    => aptitude,
-      centos    => yum,
-      redhat    => yum,
-      default   => yum,
-    }
+
+  # System Packages groups according to installation type and OS distro
+  $one_install_packages_sunstone = $operatingsystem ? {
+    CentOS => ['gcc', 'gcc-c++', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'sqlite-devel', 'scons'],
+    Ubuntu => ['build-essential','ruby','libruby','ruby-dev','irb','rdoc','ri','rubygems','rubygems-doc','libsqlite3-dev','scons'],
+  }
+
+  $one_install_packages_all = $operatingsystem ? {
+    CentOS => ['bluez-libs-devel', 'bzip2-devel', 'db4-devel', 'gcc', 'gcc-c++', 'gdbm-devel', 'openssl-devel', 'ncurses-devel', 'readline-devel', 'sqlite-devel', 'tkinter', 'tk-devel', 'zlib-devel', 'xmlrpc-c-devel', 'libxslt-devel', 'libgcrypt-devel', 'libgpg-error-devel', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'scons', 'mysql-server', 'mysql-devel'],
+    Ubuntu => ['libbluetooth-dev', 'bzip2', 'lbzip2', 'libdb4.7', 'build-essential', 'libgdbm-dev', 'libssl-dev', 'ncurses-dev', 'libreadline-dev', 'libsqlite3-dev', 'python-tk', 'idle', 'python-pmw', 'python-imaging', 'tk-dev', 'zlib1g-dev', 'libxmlrpc-core-c3-dev', 'libxmlrpc-c3-dev', 'libxslt1-dev', 'libgcrypt11-dev', 'libgpg-error-dev', 'ruby', 'libruby', 'ruby-dev', 'irb', 'rdoc', 'ri', 'rubygems', 'rubygems-doc', 'cmake', 'scons', 'mysql-client', 'mysql-server', 'libmysqlclient-dev'],
   }
 }
