@@ -66,4 +66,24 @@ class uabopennebula::params {
     CentOS => ['bluez-libs-devel', 'bzip2-devel', 'db4-devel', 'gcc', 'gcc-c++', 'gdbm-devel', 'openssl-devel', 'ncurses-devel', 'readline-devel', 'sqlite-devel', 'tkinter', 'tk-devel', 'zlib-devel', 'xmlrpc-c-devel', 'libxslt-devel', 'libgcrypt-devel', 'libgpg-error-devel', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'scons', 'mysql-server', 'mysql-devel'],
     Ubuntu => ['libbluetooth-dev', 'bzip2', 'lbzip2', 'libdb4.7', 'build-essential', 'libgdbm-dev', 'libssl-dev', 'ncurses-dev', 'libreadline-dev', 'libsqlite3-dev', 'python-tk', 'idle', 'python-pmw', 'python-imaging', 'tk-dev', 'zlib1g-dev', 'libxmlrpc-core-c3-dev', 'libxmlrpc-c3-dev', 'libxslt1-dev', 'libgcrypt11-dev', 'libgpg-error-dev', 'ruby', 'libruby', 'ruby-dev', 'irb', 'rdoc', 'ri', 'rubygems', 'rubygems-doc', 'cmake', 'scons', 'mysql-client', 'mysql-server', 'libmysqlclient-dev'],
   }
+
+  # Gem groups according to Ruby version
+  if $rubyversion >= '1.8.7'{
+    if $rubyversion == '1.8.7'{ # requires xmlparser and nokogiri shouldn't be installed
+      $one_install_gems_sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel']
+      $one_install_gems_all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'xmlparser']
+      $one_install_gem_sqlite = 'sqlite3'
+      $one_install_gem_sqlite_version = 'installed'
+    } else { # gems for Ruby > 1.8.7 - requires nokogiri and xmlparser shouldn't be installed
+      $one_install_gems_sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel']
+      $one_install_gems_all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'nokogiri']
+      $one_install_gem_sqlite = 'sqlite3'
+      $one_install_gem_sqlite_version = 'installed'
+    }
+  } else { # gems for ruby < 1.8.7 - both xmlparser and nokogiri installed, also installed sqlite3-ruby v1.2.0 instead of sqlite3
+      $one_install_gems_sunstone = ['json', 'rack', 'sinatra', 'thin', 'sequel']
+      $one_install_gems_all = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'nokogiri', 'xmlparser']
+      $one_install_gem_sqlite = 'sqlite3-ruby'
+      $one_install_gem_sqlite_version = '1.2.0'
+  }
 }
