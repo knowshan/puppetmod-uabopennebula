@@ -37,6 +37,8 @@ class uabopennebula::conf::onedconf (
   # Monitoring/polling intervals
   # Image repository, Host (hypervisor), VM monitoring drivers
 ) inherits uabopennebula::params {
+  $one_db_backend_allowed = 'u'
+  validate_re($one_db_backend,'sqlite')
   file { $one_oned_conf_path :
     content => template('uabopennebula/oned_conf.erb'),
     mode    => "0640",

@@ -56,6 +56,9 @@ class uabopennebula::params {
   # database backend
   $one_db_backend = 'sqlite'
 
+  # Allowed values for various parameters
+  $one_db_backend_allowed = ['mysql','sqlite']
+
   # System Packages groups according to installation type and OS distro
   $one_install_packages_sunstone = $operatingsystem ? {
     CentOS => ['gcc', 'gcc-c++', 'ruby', 'ruby-libs', 'ruby-devel', 'ruby-irb', 'ruby-docs', 'ruby-rdoc', 'ruby-ri', 'rubygems', 'cmake', 'sqlite-devel', 'scons'],
