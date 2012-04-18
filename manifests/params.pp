@@ -45,6 +45,7 @@ class uabopennebula::params {
   $one_oneadmin_authfile = "${oneadmin_home}/.one_auth"
   $one_oneadmin_password = 'password'
   # Install location
+  $one_version = '3.2.1'
   $one_install_script = "/tmp/one_install_script"
   $one_location = "${oneadmin_home}/tmp-install/cloud/one"
   # Installation type

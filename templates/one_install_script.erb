@@ -11,12 +11,13 @@ when "sqlite"
 <% end %>
 <%# Create install command %>
 <% install_command =  "./install.sh -u #{one_user} -g #{one_group} -d #{one_location}" %>
-<% cleanup_command = "rm release-3.2.1; rm -rf OpenNebula-one-f10e852" %>
-# /usr/bin/wget -P /tmp http://dev.opennebula.org/attachments/download/478/opennebula-3.0.0.tar.gz 
-/usr/bin/wget --no-check-certificate -P /tmp https://github.com/OpenNebula/one/tarball/release-3.2.1 
-pushd /tmp
-tar xzf release-3.2.1
-pushd OpenNebula-one-f10e852 
+<% cleanup_command = "rm -rf $ONETEMP" %>
+ONETEMP=$( mktemp -d )
+<%= "/usr/bin/wget --no-check-certificate -O $ONETEMP/opennebula-#{one_version}.tar.gz https://github.com/OpenNebula/one/tarball/release-#{one_version}" %>
+pushd $ONETEMP
+<%= "mkdir opennebula-#{one_version}" %>
+<%= "tar xzf opennebula-#{one_version}.tar.gz -C opennebula-#{one_version} --strip-component 1" %>
+<%= "pushd opennebula-#{one_version}" %>
 # Create install location dir and set permissions
 <%= "mkdir -p #{one_location}" %>
 <%= "rm -rf #{one_location}/*" %>

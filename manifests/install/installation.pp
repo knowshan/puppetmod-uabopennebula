@@ -36,6 +36,7 @@
 #   * Shantanu Pavgi, pavgi@uab.edu
 
 class uabopennebula::install::installation (
+  $one_version = $uabopennebula::params::one_version,
   $one_install_script = $uabopennebula::params::one_install_script,
   $one_install_type = $uabopennebula::params::one_install_type,
   $one_db_backend = $uabopennebula::params::one_db_backend,
