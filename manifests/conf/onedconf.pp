@@ -24,9 +24,10 @@
 
 class uabopennebula::conf::onedconf (
   # Config file path
-  $one_oned_conf_path = "$uabopennebula::params::one_oned_conf_path",
+  $one_oned_conf_path = $uabopennebula::params::one_oned_conf_path,
   # Database parameters
-  $one_db_backend = "$uabopennebula::params::one_db_backend",
+  $one_db_backend = $uabopennebula::params::one_db_backend,
+  $one_db_backend_allowed = $uabopennebula::params::one_db_backend_allowed,
   $one_db_host = undef,
   $one_db_port = undef,
   $one_db_user = undef,
@@ -37,11 +38,11 @@ class uabopennebula::conf::onedconf (
   # Monitoring/polling intervals
   # Image repository, Host (hypervisor), VM monitoring drivers
 ) inherits uabopennebula::params {
-  $one_db_backend_allowed = 'u'
-  validate_re($one_db_backend,'sqlite')
+  # validate one_db_backend
+  validate_re($one_db_backend,$one_db_backend_allowed)
   file { $one_oned_conf_path :
     content => template('uabopennebula/oned_conf.erb'),
-    mode    => "0640",
+    mode    => '0640',
   }
 }
 

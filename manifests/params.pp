@@ -58,7 +58,7 @@ class uabopennebula::params {
   $one_db_backend = 'sqlite'
 
   # Allowed values for various parameters
-  $one_db_backend_allowed = ['mysql','sqlite']
+  $one_db_backend_allowed = ['^mysql$','^sqlite$']
 
   # System Packages groups according to installation type and OS distro
   $one_install_packages_sunstone = $operatingsystem ? {
