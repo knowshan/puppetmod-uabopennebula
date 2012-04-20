@@ -57,8 +57,11 @@ class uabopennebula::params {
   # database backend
   $one_db_backend = 'sqlite'
 
-  # Allowed values for various parameters
+  # Allowed values for various parameters and facts
   $one_db_backend_allowed = ['^mysql$','^sqlite$']
+  $one_os_distros_allowed = ['^CentOS$','^Ubuntu$']
+
+  validate_re($operatingsystem,$one_os_distros_allowed)
 
   # System Packages groups according to installation type and OS distro
   $one_install_packages_sunstone = $operatingsystem ? {
