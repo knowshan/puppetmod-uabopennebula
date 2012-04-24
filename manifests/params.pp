@@ -93,7 +93,7 @@ class uabopennebula::params {
     }
   } else { # gems for ruby < 1.8.7 - both xmlparser and nokogiri installed, also installed sqlite3-ruby v1.2.0 instead of sqlite3
       $one_install_sunstone_component_degems = ['json', 'rack', 'sinatra', 'thin', 'sequel']
-      $one_install_all_components_degems = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'sqlite3-ruby', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'nokogiri', 'xmlparser']
+      $one_install_all_components_degems = ['json', 'rack', 'sinatra', 'thin', 'sequel', 'amazon-ec2', 'uuidtools', 'curb', 'mysql', 'data_mapper', 'dm-sqlite-adapter', 'dm-mysql-adapter', 'net-ldap', 'nokogiri', 'xmlparser']
       $one_install_gem_sqlite = 'sqlite3-ruby'
       $one_install_gem_sqlite_version = '1.2.0'
   }
