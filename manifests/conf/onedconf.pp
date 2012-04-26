@@ -25,6 +25,9 @@
 class uabopennebula::conf::onedconf (
   # Config file path
   $one_oned_conf_path = $uabopennebula::params::one_oned_conf_path,
+  # OpenNebula system user/group
+  $one_user = $uabopennebula::params::one_user,
+  $one_group = $uabopennebula::params::one_group,
   # Database parameters
   $one_db_backend = $uabopennebula::params::one_db_backend,
   $one_db_backend_allowed = $uabopennebula::params::one_db_backend_allowed,
@@ -43,6 +46,8 @@ class uabopennebula::conf::onedconf (
   file { $one_oned_conf_path :
     content => template('uabopennebula/oned_conf.erb'),
     mode    => '0640',
+    owner   => "$one_user",
+    group   => "$one_group",
   }
 }
 
