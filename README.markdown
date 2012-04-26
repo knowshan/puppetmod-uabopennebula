@@ -52,6 +52,17 @@ Manage oned.conf with custom database values:
       one_db_password => 'one',
       one_db_name     => 'onedb',
     }
+	
+Add hosts using onehost resource: 
+    
+	onehost{'kvm-02':
+	  ensure => present,
+	  enable => true,
+	  im_mad => im_kvm,
+	  vmm_mad => vmm_kvm,
+	  tm_mad => tm_shared,
+	  vnm_mad => dummy,
+	}
 
 
 ## Module organization
