@@ -16,6 +16,7 @@
 # Installation  parameters
 # * $one_location: OpenNebula install location ($oneadmin_home/tmp-install/cloud/one)
 # * $one_install_type: OpenNebula installation type - all, sunstone (default: undef)
+# * $one_install_forced: Force installation even if one_location is not empty (default: false)
 # * $one_install_script: (/tmp/one_install_script)
 # * $one_db_backend: Databse backend type - mysql or sqlite (sqlite)
 # * $one_install_all_components_degems: Dependency ruby gems for all components installation
@@ -54,6 +55,7 @@ class uabopennebula::params {
   $one_location = "${oneadmin_home}/tmp-install/cloud/one"
   # Installation type
   $one_install_type = 'default'
+  $one_install_forced = 'false'
   # oned configuration file path
   $one_oned_conf_path = "${one_location}/etc/oned.conf"
   # Sunstone webserver configuration file path

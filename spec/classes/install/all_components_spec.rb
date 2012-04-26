@@ -16,7 +16,9 @@ describe 'uabopennebula::install::all_components' do
     # Test if one_install_script execution is called after related File resource
     it 'should exec one_install script' do
       should contain_exec('/tmp/one_install_script').with({
-        'require' => 'File[/tmp/one_install_script]',
+        'require'  => 'File[/tmp/one_install_script]',
+        'provider' => 'shell',
+        'onlyif'   => "[[ ( -z \"$(/bin/ls -A /home/pavgi/tmp-install/cloud/one)\" ) || ('false' == 'true') ]]"
       })
     end
 

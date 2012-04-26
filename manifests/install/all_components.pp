@@ -30,6 +30,7 @@ class uabopennebula::install::all_components (
   $one_user = $uabopennebula::params::one_user,
   $one_group = $uabopennebula::params::one_group,
   $one_location = $uabopennebula::params::one_location,
+  $one_install_forced = $uabopennebula::params::one_install_forced,
   $one_install_all_components_degems = $uabopennebula::params::one_install_all_components_degems,
   $one_install_gem_sqlite = $uabopennebula::params::one_install_gem_sqlite,
   $one_install_gem_sqlite_version = $uabopennebula::params::one_install_gem_sqlite_version,
@@ -52,8 +53,10 @@ class uabopennebula::install::all_components (
     content => template('uabopennebula/one_install_script.erb'),
   }
 
-  # Install script purges all files in one_location before installing OpenNebula files
+# Don't run install script if one_install_forced is false && one_location is non-empty
   exec{$one_install_script:
     require => File[$one_install_script],
+    provider => 'shell',
+    onlyif => "[[ ( -z \"$(/bin/ls -A $one_location)\" ) || ('$one_install_forced' == 'true') ]]",
   }
 }

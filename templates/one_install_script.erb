@@ -1,31 +1,47 @@
-<%= "#!/bin/bash" %>
+#!/bin/bash
 
-<%# Create build command %>
-<% case one_db_backend
-when "sqlite"
-  build_command = 'scons' %>
-<% when 'mysql'
-  build_command = 'scons mysql=yes' %>
-<% else
-  build_command = 'echo' %>
-<% end %>
-<%# Create install command %>
-<% install_command =  "./install.sh -u #{one_user} -g #{one_group} -d #{one_location}" %>
-<% cleanup_command = "rm -rf $ONETEMP" %>
+# ruby-to-bash variables
+ONE_USER=<%= one_user %>
+ONE_GROUP=<%= one_group %>
+ONE_DB_BACKEND=<%= one_db_backend %>
+ONE_LOCATION=<%= one_location %>
+ONE_VERSION=<%= one_version %>
+ONE_INSTALL_FORCED=<%= one_install_forced %>
+
+# Commands
+## Build Command
+case "$ONE_DB_BACKEND" in
+  'sqlite')
+    BUILD_COMMAND='scons'
+    ;;
+  'mysql')
+    BUILD_COMMAND='scons mysql=yes'
+    ;;
+   *)
+    echo 'Invalid database type. Validate database types in Puppet manifests as well'
+    exit 1
+esac
+## Install Command
+INSTALL_COMMAND="./install.sh -u $ONE_USER -g $ONE_GROUP -d $ONE_LOCATION"
+## Cleanup command
 ONETEMP=$( mktemp -d )
-<%= "/usr/bin/wget --no-check-certificate -O $ONETEMP/opennebula-#{one_version}.tar.gz https://github.com/OpenNebula/one/tarball/release-#{one_version}" %>
+CLEANUP_COMMAND="rm -rf $ONETEMP"
+
+echo "Downloading $ONE_VERSION"
+/usr/bin/wget --no-check-certificate -O $ONETEMP/opennebula-$ONE_VERSION.tar.gz https://github.com/OpenNebula/one/tarball/release-$ONE_VERSION
 pushd $ONETEMP
-<%= "mkdir opennebula-#{one_version}" %>
-<%= "tar xzf opennebula-#{one_version}.tar.gz -C opennebula-#{one_version} --strip-component 1" %>
-<%= "pushd opennebula-#{one_version}" %>
+
+mkdir opennebula-$ONE_VERSION
+tar xzf opennebula-$ONE_VERSION.tar.gz -C opennebula-$ONE_VERSION --strip-component 1 
+pushd opennebula-$ONE_VERSION
 # Create install location dir and set permissions
-<%= "mkdir -p #{one_location}" %>
-<%= "rm -rf #{one_location}/*" %>
-<%= "chown #{one_user}:#{one_group} #{one_location}" %>
-<%= "# Build/Compile using scons" %>
-<%= "#{build_command}" %>
-<%= "# Run install script" %>
-<%= "#{install_command}" %>
+mkdir -p $ONE_LOCATION 
+rm -rf $ONE_LOCATION/*
+chown $ONE_USER:$ONE_GROUP $ONE_LOCATION
+# Build/Compile using scons
+$BUILD_COMMAND
+# Run install script 
+$INSTALL_COMMAND
 popd
-<%= "#{cleanup_command}" %>
+$CLEANUP_COMMAND
 popd
