@@ -1,0 +1,50 @@
+# Startup script for the OpenNebula daemon
+#
+# chkconfig: 345 99 01
+# description: OpenNebula server daemon - starts 'one' process with
+# -b option to backup log files
+# processname: oned
+# pidfile: <%= one_location %>/var/one.pid
+# config:  <%= one_location %>/etc/oned.conf
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+export ONE_USER="<%= one_user %>"
+export ONE_GROUP="<%= one_group %>"
+export ONE_LOCATION="<%= one_location %>"
+export PATH="$ONE_LOCATION/bin:$PATH"
+export ONE_AUTH="<%= one_oneadmin_authfile %>"
+
+#VER=`cat /etc/redhat-release | awk '{print $3}' | awk -F . '{print $1}'`
+
+RETVAL=0
+
+case "$1" in
+    start)
+        echo "Starting OpenNebula server..."
+        daemon --user "$ONE_USER" one -b start
+        touch /var/lock/subsys/oned
+    ;;
+
+    stop)
+        echo "Shutting down OpenNebula server... "
+        daemon --user "$ONE_USER" one stop
+        rm -f /var/lock/subsys/oned
+    ;;
+
+    status)
+        status -p "$ONE_LOCATION/var/oned.pid" oned || exit $?
+    ;;
+
+    restart)
+        $0 stop; $0 start
+    ;;
+
+    *)
+        echo "Usage: oned {start|stop|status|restart}"
+        exit 1
+esac
+
+exit $RETVAL
+
