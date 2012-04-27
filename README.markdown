@@ -95,6 +95,8 @@ Any suggestions to change or improve this module organization are welcome.
 * Test System: CentOS 6.2, Ruby 1.8.7 and Puppet 2.6.12 
 * Partially tested on Ubuntu 10.04 system 
 
+## Requirements
+ * [Puppet stdlib module](https://github.com/puppetlabs/puppetlabs-stdlib) in Puppet module path
 
 ## Issues
  * Typically a Puppet agent (on client side) runs as the 'root' user and hence you may experience failures while managing files located in NFS server with root squash enabled. The OpenNebula installation ($ONE_LOCATION) and OpenNebula system user's home directory are most likely to be located over NFS as well. So you will need to address this NFS issue if you want Puppet to manage NFS mounted files.
