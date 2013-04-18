@@ -1,5 +1,7 @@
 # Puppet module for [OpenNebula](http://opennebula.org/)
 
+### Not Maintained Anymore - Defunct
+
 ## Overview
 This is a Puppet module for installing and managing self-contained [OpenNebula](http://opennebula.org/) installations. The module is being developed for self-contained directory installation of OpenNebula (3.0+) on CentOS and Ubuntu platforms. In addition to OpenNebula installation from source this module installs required Ruby gems dependencies and system packages as well. 
 
